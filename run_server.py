@@ -2,6 +2,8 @@ import json
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from pprint import pprint
 
+PORT = 8000
+
 
 class RequestHandler(BaseHTTPRequestHandler):
     def do_POST(self):
@@ -19,5 +21,6 @@ class RequestHandler(BaseHTTPRequestHandler):
 
 
 if __name__ == "__main__":
-    httpd = HTTPServer(("localhost", 8000), RequestHandler)
+    print(f"start listening on port {PORT}")
+    httpd = HTTPServer(("localhost", PORT), RequestHandler)
     httpd.serve_forever()
