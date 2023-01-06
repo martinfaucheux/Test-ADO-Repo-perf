@@ -13,6 +13,7 @@ class RequestHandler(BaseHTTPRequestHandler):
         payload = json.loads(payload.decode("utf-8"))
 
         # Output the payload to the console
+        print("\n")
         pprint(payload)
 
         # Send a response with a 200 status code
