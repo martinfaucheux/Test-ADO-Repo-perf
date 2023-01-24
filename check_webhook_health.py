@@ -4,7 +4,8 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 from pathlib import Path
 from threading import Thread
 
-from azure_notif_reader import InvalidPayload, get_commit_id_from_payload
+from ado_client import ADOClient
+from ado_notif_reader import InvalidPayload, get_commit_id_from_payload
 from git_utils import push_change
 
 COMMIT_PERIOD = 5
@@ -87,6 +88,7 @@ def display_report():
 
 
 if __name__ == "__main__":
+    client = ADOClient()
     server = HTTPServer(("localhost", PORT), RequestHandler)
 
     webapp_thread = Thread(target=server.serve_forever)
@@ -99,13 +101,17 @@ if __name__ == "__main__":
     for thread in threads:
         thread.start()
 
+    client.create_subscription()
+
     try:
         periodical_commit()
     except KeyboardInterrupt:
         print("Keyboard interrupt")
-        do_interrupt = True
-        server.shutdown()
-        for thread in threads:
-            thread.join()
 
-        display_report()
+    do_interrupt = True
+    server.shutdown()
+    for thread in threads:
+        thread.join()
+
+    display_report()
+    client.delete_all_subscriptions()

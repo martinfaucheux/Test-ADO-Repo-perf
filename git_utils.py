@@ -6,7 +6,7 @@ import subprocess
 def push_change(file_path, commit_id):
 
     header_commands = []
-    if ado_pat := os.environ.get("ADO_PAT"):
+    if ado_pat := os.environ.get("ADO_TOKEN"):
         b64token = base64.b64encode(f":{ado_pat}".encode()).decode()
         header_commands = ["-c", f"http.extraHeader=Authorization: Basic {b64token}"]
 
